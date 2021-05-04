@@ -1,17 +1,27 @@
 {
-  "name": "HW",
+  "name": "employee-tracker",
   "version": "1.0.0",
   "description": "",
-  "main": "apiRoutes2.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "main": "server.js",
   "dependencies": {
     "console.table": "^0.10.0",
     "inquirer": "^8.0.0",
     "mysql": "^2.18.1"
-  }
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MelElson/Employee-Tracker.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MelElson/Employee-Tracker/issues"
+  },
+  "homepage": "https://github.com/MelElson/Employee-Tracker#readme"
 }

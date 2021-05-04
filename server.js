@@ -1,7 +1,8 @@
 const mysql = require('mysql');
 const inquirer = require('inquirer');
-//const cTable = require('console.table');
+
 require('console.table');
+
 
 const connection = mysql.createConnection({
     host: 'localhost',
@@ -58,9 +59,11 @@ const start = () => {
                 case 'Add Employee':
                     addEmployee();
                     break;
+
                 case 'Add Department':
                     addDepartment();
                     break;
+                    
                 case 'Add Role':
                     addRole();
                     break;
@@ -101,7 +104,7 @@ const employeeSearch = () => {
         connection.end();
     });
 };
-
+///////////-------------------View Deparment
 const departmentSearch = () => {
     console.log('Selecting all department...\n');
     connection.query('SELECT * FROM department', (err, res) => {
@@ -112,6 +115,7 @@ const departmentSearch = () => {
     });
 };
 
+//////////------------------View Role
 const roleSearch = () => {
     console.table('Selecting all role...\n');
     connection.query('SELECT * FROM empRole', (err, res) => {
@@ -122,7 +126,67 @@ const roleSearch = () => {
     });
 };
 
-const addDepartment = () => {
+///////---------------------Add Employee
+const addEmployee = () => {
+    connection.query('SELECT * FROM empRole', async function (err, res) {
+        if (err) throw err;
+        inquirer
+            .prompt([
+                {
+                    name: 'first_name',
+                    type: 'input',
+                    message: "what is the employee's first name?",
+
+                },
+                {
+                    name: 'last_name',
+                    type: 'input',
+                    message: "What is the employee's last name?",
+                },
+                {
+                    name: 'manager_id',
+                    type: 'input',
+                    message: "What is the employee's manager's ID?",
+                },
+                {
+                    name: 'role_id',
+                    type: 'list',
+                    choices: function () {
+                      var roleArray = [];
+                      for (let i = 0; i < res.length; i++) {
+                        roleArray.push(res[i].empTitle);
+                      }
+                      return roleArray;
+                    },
+                    message: "What is this employee's role? "
+                  },
+                ]).then(function (answer) {
+                  let role_id;
+                  for (let i = 0; i < res.length; i++) {
+                    if (res[i].empTitle == answer.role) {
+                      role_id = res[i].id;
+                      console.log(role_id)
+                    }
+                  }
+                  connection.query(
+                    'INSERT INTO employee SET ?', {
+                      first_name: answer.first_name,
+                      last_name: answer.last_name,
+                      manager_id: answer.manager_id,
+                      role_id: role_id,
+                    },
+                    function (err) {
+                      if (err) throw err;
+                      console.log('Your ${last_name} has been added!');
+                      start();
+                    })
+                })
+            })
+          };
+
+          
+    ////////------------------Add Deptartment
+    const addDepartment = () => {
     connection.query('SELECT * FROM department', function (err, res) {
         if (err) throw err;
         inquirer
@@ -143,8 +207,9 @@ const addDepartment = () => {
                     })
             })
     })
-};
+   };
 
+   /////////////////---------------Add Role
 const addRole = () => {
     connection.query('SELECT * FROM empRole', function (err, res) {
         if (err) throw err;
@@ -153,21 +218,21 @@ const addRole = () => {
                 name: 'empTitle',
                 type: 'input',
                 message: "What Employee role would you like to add? ",
-            }, 
+            },
             {
                 name: 'salary',
                 type: 'input',
                 message: "What is the salary?",
             },
-        
-        
-        
-        ]).then(function (answer) {
+
+
+
+            ]).then(function (answer) {
                 connection.query(
                     'INSERT INTO empRole SET ?', {
-                        empTitle: answer.empTitle,
-                        salary: answer.salary,
-                    },
+                    empTitle: answer.empTitle,
+                    salary: answer.salary,
+                },
                     function (err) {
                         if (err) throw err;
                         console.log('Your new role has been added!');
@@ -176,6 +241,7 @@ const addRole = () => {
             })
     })
 };
+
 
 connection.connect((err) => {
     if (err) throw err;
