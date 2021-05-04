@@ -36,7 +36,7 @@ const start = () => {
                 'Remove Emloyee',
                 'Update Employee Role',
                 'Update Employee Manager',
-                'exit',
+                'Exit',
             ],
         })
         .then((answer) => {
@@ -104,7 +104,7 @@ const employeeSearch = () => {
         connection.end();
     });
 };
-///////////-------------------View Deparment
+///////////-------------------View Department
 const departmentSearch = () => {
     console.log('Selecting all department...\n');
     connection.query('SELECT * FROM department', (err, res) => {
@@ -161,20 +161,27 @@ const addEmployee = () => {
                     message: "What is this employee's role? "
                   },
                 ]).then(function (answer) {
-                  let role_id;
-                  for (let i = 0; i < res.length; i++) {
-                    if (res[i].empTitle == answer.role) {
-                      role_id = res[i].id;
-                      console.log(role_id)
-                    }
-                  }
+                    console.log("the role id is: ", answer.role_id)
+                //   let role_id;
+                //   for (let i = 0; i < res.length; i++) {
+                //     if (res[i].empTitle == answer.role_id) {
+                //       role_id = res[i].id;
+                //       console.log(role_id)
+                //     }
+                //   }
                   connection.query(
                     'INSERT INTO employee SET ?', {
                       first_name: answer.first_name,
                       last_name: answer.last_name,
                       manager_id: answer.manager_id,
-                      role_id: role_id,
+                      role_id: answer.role_id,
                     },
+                    // (error) => {
+                    //     if (error) throw err;
+                    //     console.log('Your employee has been added!');
+                    //     start();
+                    
+                    
                     function (err) {
                       if (err) throw err;
                       console.log('Your ${last_name} has been added!');
@@ -224,7 +231,11 @@ const addRole = () => {
                 type: 'input',
                 message: "What is the salary?",
             },
-
+            {
+                name: 'department_id',
+                type: 'input',
+                message: "What is the department id?",
+            },
 
 
             ]).then(function (answer) {
@@ -232,6 +243,7 @@ const addRole = () => {
                     'INSERT INTO empRole SET ?', {
                     empTitle: answer.empTitle,
                     salary: answer.salary,
+                    department_id: answer.department_id,
                 },
                     function (err) {
                         if (err) throw err;
@@ -248,3 +260,4 @@ connection.connect((err) => {
     console.log(`connected as id ${connection.threadId}\n`);
     start();
 });
+
