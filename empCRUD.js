@@ -1,6 +1,7 @@
 const mysql = require('mysql');
 const inquirer = require('inquirer');
-
+//const cTable = require('console.table');
+require('console.table');
 
 const connection = mysql.createConnection({
     host: 'localhost',
@@ -27,7 +28,10 @@ const start = () => {
                 'View ALL Employees',
                 'View ALL Employees by Department',
                 'View ALL Employees by Manager',
+                'View ALL Employees by Role',
                 'Add Employee',
+                'Add Department',
+                'Add Role',
                 'Remove Emloyee',
                 'Update Employee Role',
                 'Update Employee Manager',
@@ -43,6 +47,9 @@ const start = () => {
                 case 'View ALL Employees by Department':
                     departmentSearch();
                     break;
+                case 'View ALL Employees by Role':
+                    roleSearch();
+                    break;
 
                 case 'View ALL Employees by Manager':
                     mangerSearch();
@@ -50,6 +57,12 @@ const start = () => {
 
                 case 'Add Employee':
                     addEmployee();
+                    break;
+                case 'Add Department':
+                    addDepartment();
+                    break;
+                case 'Add Role':
+                    addRole();
                     break;
 
                 case 'Remove Employee':
@@ -68,7 +81,7 @@ const start = () => {
                     connection.end();
                     break;
 
-                
+
 
                 default:
                     console.log(`Invalid action: ${answer.action}`);
@@ -77,77 +90,92 @@ const start = () => {
         });
 };
 
-// const artistSearch = () => {
-//     inquirer
-//         .prompt({
-//             name: 'artist',
-//             type: 'input',
-//             message: 'What artist would you like to search for?',
-//         })
-//         .then((answer) => {
-//             const query = 'SELECT position, song, year FROM top5000 WHERE ?';
-//             connection.query(query, { artist: answer.artist }, (err, res) => {
-//                 if (err) throw err;
-//                 res.forEach(({ position, song, year }) => {
-//                     console.log(
-//                         `Position: ${position} || Song: ${song} || Year: ${year}`
-//                     );
-//                 });
-//                 runSearch();
-//             });
-//         });
-// };
 
-// const multiSearch = () => {
-//     const query =
-//         'SELECT artist FROM top5000 GROUP BY artist HAVING count(*) > 1';
-//     connection.query(query, (err, res) => {
-//         if (err) throw err;
-//         res.forEach(({ artist }) => console.log(artist));
-//         runSearch();
-//     });
-// };
+/////////////////--------------View Employees
+const employeeSearch = () => {
+    console.log('Selecting all employees...\n');
+    connection.query('SELECT * FROM employee', (err, res) => {
+        if (err) throw err;
+        // Log all results of the SELECT statement
+        console.table(res);
+        connection.end();
+    });
+};
 
-// const rangeSearch = () => {
-//     inquirer
-//         .prompt([
-//             {
-//                 name: 'start',
-//                 type: 'input',
-//                 message: 'Enter starting position: ',
-//                 validate(value) {
-//                     if (isNaN(value) === false) {
-//                         return true;
-//                     }
-//                     return false;
-//                 },
-//             },
-//             {
-//                 name: 'end',
-//                 type: 'input',
-//                 message: 'Enter ending position: ',
-//                 validate(value) {
-//                     if (isNaN(value) === false) {
-//                         return true;
-//                     }
-//                     return false;
-//                 },
-//             },
-//         ])
-//         .then((answer) => {
-//             const query =
-//                 'SELECT position,song,artist,year FROM top5000 WHERE position BETWEEN ? AND ?';
-//             connection.query(query, [answer.start, answer.end], (err, res) => {
-//                 if (err) throw err;
-//                 res.forEach(({ position, song, artist, year }) =>
-//                     console.log(
-//                         `Position: ${position} || Song: ${song} || Artist: ${artist} || Year: ${year}`
-//                     )
-//                 );
-//                 runSearch();
-//             });
-//         });
-// };
+const departmentSearch = () => {
+    console.log('Selecting all department...\n');
+    connection.query('SELECT * FROM department', (err, res) => {
+        if (err) throw err;
+        // Log all results of the SELECT statement
+        console.table(res);
+        connection.end();
+    });
+};
+
+const roleSearch = () => {
+    console.table('Selecting all role...\n');
+    connection.query('SELECT * FROM empRole', (err, res) => {
+        if (err) throw err;
+        // Log all results of the SELECT statement
+        console.table(res);
+        connection.end();
+    });
+};
+
+const addDepartment = () => {
+    connection.query('SELECT * FROM department', function (err, res) {
+        if (err) throw err;
+        inquirer
+            .prompt([{
+                name: 'department',
+                type: 'input',
+                message: "What department would you like to add? ",
+            },
+            ]).then(function (answer) {
+                connection.query(
+                    'INSERT INTO department SET ?', {
+                    name: answer.department,
+                },
+                    function (err) {
+                        if (err) throw err;
+                        console.log('Your department has been added!');
+                        start();
+                    })
+            })
+    })
+};
+
+const addRole = () => {
+    connection.query('SELECT * FROM empRole', function (err, res) {
+        if (err) throw err;
+        inquirer
+            .prompt([{
+                name: 'empTitle',
+                type: 'input',
+                message: "What Employee role would you like to add? ",
+            }, 
+            {
+                name: 'salary',
+                type: 'input',
+                message: "What is the salary?",
+            },
+        
+        
+        
+        ]).then(function (answer) {
+                connection.query(
+                    'INSERT INTO empRole SET ?', {
+                        empTitle: answer.empTitle,
+                        salary: answer.salary,
+                    },
+                    function (err) {
+                        if (err) throw err;
+                        console.log('Your new role has been added!');
+                        start();
+                    })
+            })
+    })
+};
 
 connection.connect((err) => {
     if (err) throw err;
