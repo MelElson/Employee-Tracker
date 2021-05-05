@@ -128,7 +128,7 @@ const roleSearch = () => {
 
 ///////---------------------Add Employee
 const addEmployee = () => {
-    connection.query('SELECT * FROM empRole', async function (err, res) {
+    connection.query('SELECT * FROM empRole', function (err, res) {
         if (err) throw err;
         inquirer
             .prompt([
@@ -162,13 +162,7 @@ const addEmployee = () => {
                   },
                 ]).then(function (answer) {
                     console.log("the role id is: ", answer.role_id)
-                //   let role_id;
-                //   for (let i = 0; i < res.length; i++) {
-                //     if (res[i].empTitle == answer.role_id) {
-                //       role_id = res[i].id;
-                //       console.log(role_id)
-                //     }
-                //   }
+           
                   connection.query(
                     'INSERT INTO employee SET ?', {
                       first_name: answer.first_name,
@@ -176,15 +170,10 @@ const addEmployee = () => {
                       manager_id: answer.manager_id,
                       role_id: answer.role_id,
                     },
-                    // (error) => {
-                    //     if (error) throw err;
-                    //     console.log('Your employee has been added!');
-                    //     start();
-                    
-                    
+                                       
                     function (err) {
                       if (err) throw err;
-                      console.log('Your ${last_name} has been added!');
+                      console.log('Employee has been added!');
                       start();
                     })
                 })
