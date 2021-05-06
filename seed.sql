@@ -1,41 +1,22 @@
-INSERT INTO employee (first_name,last_name,role_id,manager_id)
-VALUES ("Albert","Einstein",11,44);
-
-INSERT INTO employee (first_name,last_name,role_id,manager_id)
-VALUES ("Ashley","Adam",22,55);
-
-INSERT INTO employee (first_name,last_name,role_id,manager_id)
-VALUES ("Jovan","Night",33,66);
-
-INSERT INTO employee (first_name,last_name,role_id,manager_id)
-VALUES ("John","White",44,77);
-
---  Employee Role
-
-INSERT INTO empRole (empTitle,salary,department_id)
-VALUES ("Lawyer",250000,10);
-
-INSERT INTO empRole (empTitle,salary,department_id)
-VALUES ("Project_Manager",150000,11);
-
-INSERT INTO empRole (empTitle,salary,department_id)
-VALUES ("Full_Stack",150000,12);
-
-INSERT INTO empRole (empTitle,salary,department_id)
-VALUES ("Sales_Rep",50000,13);
-
--- Department
-INSERT INTO department (name)
-VALUES ("Legal");
-
-INSERT INTO department (name)
-VALUES ("Manager");
-
-INSERT INTO department (name)
-VALUES ("Web_Dev");
-
-INSERT INTO department (name)
-VALUES ("Sales");
+USE employee_DB;
+INSERT INTO department 
+    (name)
+VALUES
+    ('Manager'),
+    ('Web Dev'),
+    ('Legal');
+INSERT INTO empRole
+    (title, salary, department_id)
+VALUES
+    ('Project Manager', 150000, 1),
+    ('Full Stack Dev', 200000, 2),
+    ('Lawyer', 250000, 3);
+INSERT INTO employee
+    (first_name, last_name, role_id, manager_id)
+VALUES
+    ('Jane', 'Ad', 1, 1),
+    ('Joe', 'Nigjt', 2, 1),
+    ('John', 'Adams', 3, 2);
 
 
 
