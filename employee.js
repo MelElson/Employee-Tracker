@@ -84,9 +84,11 @@ const start = () => {
 
 //---------------------------view emp
 const employeeSearch = () => {
-  connection.query('SELECT * FROM employee', (err, res) => {
+  //ORDER BY column1 ASC;
+  connection.query('SELECT employee.id, employee.first_name, employee.last_name, empRole.title, department.name, empRole.salary FROM employee, empRole, department WHERE department.id = empRole.department_id AND empRole.id = employee.role_id ORDER BY employee.id ASC', (err, res) => {
     if (err) throw err;
     // Log all results of the SELECT statement
+
     console.table('All Employees', res);
     start();
   });
@@ -124,6 +126,7 @@ const managerSearch = () => {
   connection.query('SELECT * FROM employee', (err, res) => {   ///?? add managers?
     if (err) throw err;
     // Log all results of the SELECT statement
+
     console.table('All Managers', res);
 
     start();
@@ -221,38 +224,46 @@ const addDepartment = () => {
 
 const addRole = () => {
   connection.query('SELECT * FROM empRole', function (err, res) {
-    if (err) throw err;
-    inquirer
-      .prompt([
-        {
-          name: 'title',
-          type: 'input',
-          message: "What Employee title would you like to add? ",
-        },
-        {
-          name: 'salary',
-          type: 'input',
-          message: "What salary would you like for this role? ",
-        },
-        {
-          name: 'department_id',
-          type: 'input',
-          message: "What is the department id for this role? ",
-        },
-
-      ]).then(function (answer) {
-        connection.query(
-          'INSERT INTO role SET ?', {
-          title: answer.title,
-          salary: answer.salary,
-          department_id: answer.department_id,
-        },
-          function (err) {
-            if (err) throw err;
-            console.log('Your new title has been added!');
-            start();
-          })
+    connection.query('SELECT * FROM department', function (err, response_dept) {
+      //this is equivalent to response_dept[i], i++, i< response_dept.length
+      let departments = response_dept.map((dept) => {
+        return { name: dept.name, value: dept.id }
       })
+
+      if (err) throw err;
+      inquirer
+        .prompt([
+          {
+            name: 'title',
+            type: 'input',
+            message: "What Employee title would you like to add? ",
+          },
+          {
+            name: 'salary',
+            type: 'input',
+            message: "What salary would you like for this role? ",
+          },
+          {
+            name: 'department_id',
+            type: 'list',
+            choices: departments,
+            message: "What is the department for this role? ",
+          },
+
+        ]).then(function (answer) {
+          connection.query(
+            'INSERT INTO empRole SET ?', {
+            title: answer.title,
+            salary: answer.salary,
+            department_id: answer.department_id,
+          },
+            function (err) {
+              if (err) throw err;
+              console.log('Your new title has been added!');
+              start();
+            })
+        })
+    })
   })
 };
 
@@ -260,6 +271,11 @@ const addRole = () => {
 
 const removeEmployee = () => {
   connection.query('SELECT * FROM employee', function (err, res) {
+    // connection.query('SELECT * FROM depar', function (err, response_dept) {
+    //   //this is equivalent to response_dept[i], i++, i< response_dept.length
+    //   let departments = response_dept.map((dept) => {
+    //     return { name: dept.name, value: dept.id }
+    //   })
     if (err) throw err;
     inquirer
       .prompt([
