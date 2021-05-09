@@ -11,25 +11,38 @@
 1. [Title](#title)
 2. [Description](#Description)
 3. [Installation](#Installation)
-4. [Collaboration](#Collaboration)
-5. [Steps](#Steps)
+4. [Technologies](#Technologies)
+5. [Collaboration](#Collaboration)
+6. [Steps](#Steps)
+7. [Walkthrough](#Walkthrough)
 
+# Description
 * Developers are often tasked with creating interfaces that make it easy for non-developers to view and interact with information stored in databases. Often these interfaces are known as **C**ontent **M**anagement **S**ystems. In this homework assignment, your challenge is to architect and build a solution for managing a company's employees using node, inquirer, and MySQL.
 
-## Technologies 
+# Installation
+* To install: node employee.js
+
+# Technologies 
 The site uses Javascript, Node,js, Inquirer, Express, MYSQL
 
 # Collaboration 
 Pulls are encouraged. Any changes document. 
 
 # Steps
+* The command-line application should allow users to:
 
+  * Add departments, roles, employees
 
-### Team Generator Screenshot
-![Changed HTML](./images/screenshot.png)
+  * View departments, roles, employees
 
-### Team Generator Input
-![Changed HTML](./images/screenshot.png)
+  * Update employee roles
+
+# Walkthrough
+### Employee Tracker Screenshot
+![Changed HTML](./images/screenshotemployeetracker.png)
+
+### Employee Tracker Input
+![Changed HTML](./images/screenshotselections.png)
 
 ### Walkthrough
-![Demo of App](./images/Walkthrough.gif)
+![Demo of App](./images/employeetracker.gif)

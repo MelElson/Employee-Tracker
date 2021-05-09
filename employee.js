@@ -269,35 +269,36 @@ const addRole = () => {
 
 //---------------------------------Remove Employee
 
-const removeEmployee = () => {
-  connection.query('SELECT * FROM employee', function (err, res) {
-    // connection.query('SELECT * FROM depar', function (err, response_dept) {
-    //   //this is equivalent to response_dept[i], i++, i< response_dept.length
-    //   let departments = response_dept.map((dept) => {
-    //     return { name: dept.name, value: dept.id }
-    //   })
-    if (err) throw err;
-    inquirer
-      .prompt([
-        {
-          name: 'last_name',
-          type: 'input',
-          message: "What is last name of employee would you like to remove? ",
-        },
-      ]).then(function (answer) {
-        connection.query(
+// const removeEmployee = () => {
+//   //  connection.query('SELECT * FROM employee', function (err, res) {
+//   connection.query('SELECT * FROM employee', function (err, response_emp) {
 
-          'DELETE FROM employee ?', {
-          name: answer.last_name,
-        },
-          function (err) {
-            if (err) throw err;
-            console.log('The employee has been removed!');
-            start();
-          })
-      })
-  })
-};
+//     let employees = response_emp.map((emp) => {
+//       return { name: emp.last_name, value: emp.id }
+//     })
+//     if (err) throw err;
+//     inquirer
+
+//       .prompt([
+//         {
+//           name: 'employee_id',
+//           type: 'list',
+//           choices: employees,
+//           message: "What employee do you want to remove? ",
+//         },
+//       ]).then(function (answer) {
+//         connection.query(
+//           'DELETE FROM employee_DB.employee ?', {
+//           employee_id: answer.employee_id,
+//         },
+//           function (err) {
+//             if (err) throw err;
+//             console.log('The employee has been removed!');
+//             start();
+//           })
+//       })
+//   })
+// };
 
 connection.connect((err) => {
   if (err) throw err;
