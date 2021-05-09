@@ -21,6 +21,10 @@
 
 # Installation
 * To install: node employee.js
+## Links
+* https://github.com/MelElson/Employee-Tracker
+* https://drive.google.com/file/d/1jfYS16miuVaaAOYooWiQilcVxPDgfu12/view 
+
 
 # Technologies 
 The site uses Javascript, Node,js, Inquirer, Express, MYSQL
